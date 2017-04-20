@@ -121,43 +121,43 @@ class SharedPackageInstaller extends LibraryInstaller
         $this->createPackageVendorSymlink($package);
         $this->packageDataManager->addPackageUsage($package);
 
-        $binaries = $package->getBinaries();
-        if (!empty($binaries) && !file_exists($this->getInstallPath($package) . '/vendor')) {
+        if ($this->config->installBinaries()) {
 
-            $factory = new Factory();
-            $subcomposer = $factory->createComposer(
-                $this->io,
-                null,
-                false,
-                $this->getInstallPath($package),
-                true
-            );
+            $binaries = $package->getBinaries();
 
-            $extra = $this->composer->getPackage()->getExtra();
-            if (empty($extra)) {
-                $extraGlobal = $factory->createGlobal($this->io)->getPackage()->getExtra();
-                if (isset($extraGlobal['shared-package'])) {
-                    $extra = array_merge_recursive($extra, array('shared-package' => $extraGlobal['shared-package']));
-                }
+            if (!empty($binaries) && !file_exists($this->getInstallPath($package) . '/vendor')) {
+
+                $factory = new Factory();
+                $subcomposer = $factory->createComposer(
+                    $this->io,
+                    null,
+                    false,
+                    $this->getInstallPath($package),
+                    true
+                );
+
+                // Disable install binaries to prevent recursion.
+                $extra = array_merge($this->composer->getPackage()->getExtra(), array('shared-package' => array('install-binaries' => true)));
+
+                // Merge extra.
+                $subcomposer->getPackage()->setExtra($extra);
+                $subcomposer->getPackage()->setInstallationSource('source');
+
+                // Activate plugin.
+                $sharedPackage = new SharedPackagePlugin();
+                $sharedPackage->activate($subcomposer, $this->io);
+
+                // Add download manager.
+                $dm = $factory->createDownloadManager($this->io, $subcomposer->getConfig());
+                $dm->setPreferSource(true);
+                $subcomposer->setDownloadManager($dm);
+
+                // Create and run installer.
+                $install = Installer::create($this->io, $subcomposer);
+                $install->setRunScripts(false);
+                $install->setPreferSource(true);
+                $install->run();
             }
-
-            // Merge extra.
-            $subcomposer->getPackage()->setExtra($extra);
-            $subcomposer->getPackage()->setInstallationSource('source');
-
-            // Activate plugin.
-            $sharedPackage = new SharedPackagePlugin();
-            $sharedPackage->activate($subcomposer, $this->io);
-
-            // Add download manager.
-            $dm = $factory->createDownloadManager($this->io, $subcomposer->getConfig());
-            $dm->setPreferSource(true);
-            $subcomposer->setDownloadManager($dm);
-
-            // Create and run installer.
-            $install = Installer::create($this->io, $subcomposer);
-            $install->setPreferSource(true);
-            $install->run();
         }
     }
 

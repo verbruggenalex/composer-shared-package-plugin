@@ -50,6 +50,11 @@ class SharedPackageInstallerConfig
     protected $isSymlinkEnabled = true;
 
     /**
+     * @var bool
+     */
+    protected $installBinaries = false;
+
+    /**
      * @var array
      */
     protected $packageList = array();
@@ -70,6 +75,7 @@ class SharedPackageInstallerConfig
         $this->setSymlinkDirectory($baseDir, $extraConfigs);
         $this->setSymlinkBasePath($extraConfigs);
         $this->setIsSymlinkEnabled($extraConfigs);
+        $this->setInstallBinaries($extraConfigs);
         $this->setPackageList($extraConfigs);
     }
 
@@ -157,6 +163,23 @@ class SharedPackageInstallerConfig
     }
 
     /**
+     * The symlink directory creation process can be disabled.
+     * This may mean that you work directly with the sources directory so the symlink directory is useless.
+     *
+     * @param array $extraConfigs
+     */
+    protected function setInstallBinaries(array $extraConfigs)
+    {
+        if (isset($extraConfigs[SharedPackageInstaller::PACKAGE_TYPE]['install-binaries'])) {
+            if (!is_bool($extraConfigs[SharedPackageInstaller::PACKAGE_TYPE]['install-binaries'])) {
+                throw new \UnexpectedValueException('The configuration "install-binaries" should be a boolean');
+            }
+
+            $this->installBinaries = $extraConfigs[SharedPackageInstaller::PACKAGE_TYPE]['install-binaries'];
+        }
+    }
+
+    /**
      * @return array
      */
     public function getPackageList()
@@ -186,6 +209,14 @@ class SharedPackageInstallerConfig
     public function isSymlinkEnabled()
     {
         return $this->isSymlinkEnabled;
+    }
+
+    /**
+     * @return bool
+     */
+    public function installBinaries()
+    {
+        return $this->installBinaries;
     }
 
     /**
