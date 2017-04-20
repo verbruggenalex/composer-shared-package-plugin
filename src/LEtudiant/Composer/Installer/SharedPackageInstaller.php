@@ -122,7 +122,7 @@ class SharedPackageInstaller extends LibraryInstaller
         $this->packageDataManager->addPackageUsage($package);
 
         $binaries = $package->getBinaries();
-        if (!empty($binaries) && !file_exists($this->getInstallPath($package) . '/vendor')) {
+        if (!empty($binaries) && !file_exists($this->getInstallPath($package) . '/vendor') && FALSE) {
 
             $factory = new Factory();
             $subcomposer = $factory->createComposer(
@@ -137,7 +137,7 @@ class SharedPackageInstaller extends LibraryInstaller
             if (!$extra) {
                 $extraGlobal = $factory->createGlobal($this->io)->getPackage()->getExtra();
                 if (isset($extraGlobal['shared-package'])) {
-                    $extra = array_merge_recursive($extra, array('shared-package' =>$extraGlobal['shared-package']));
+                    $extra = array_merge_recursive($extra, array('shared-package' => $extraGlobal['shared-package']));
                 }
             }
 
