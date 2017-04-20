@@ -133,8 +133,16 @@ class SharedPackageInstaller extends LibraryInstaller
                 true
             );
 
+            $extra = $this->composer->getPackage()->getExtra();
+            if (!$extra) {
+                $extraGlobal = $factory->createGlobal($this->io)->getPackage()->getExtra();
+                if (isset($extraGlobal['shared-package'])) {
+                    $extra = array_merge_recursive($extra, array('shared-package' =>$extraGlobal['shared-package']));
+                }
+            }
+
             // Merge extra.
-            $subcomposer->getPackage()->setExtra($this->composer->getPackage()->getExtra());
+            $subcomposer->getPackage()->setExtra($extra);
             $subcomposer->getPackage()->setInstallationSource('source');
 
             // Activate plugin.
