@@ -46,6 +46,7 @@ class SharedPackageSolver
      */
     public function __construct(SharedPackageInstallerConfig $config)
     {
+        var_dump($config);
         $packageList = $config->getPackageList();
         $this->areAllShared = in_array("*", $packageList);
 
