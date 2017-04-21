@@ -47,7 +47,7 @@ class SharedPackageSolver
     public function __construct(SharedPackageInstallerConfig $config)
     {
         $packageList = $config->getPackageList();
-        $this->areAllShared = in_array("*", $packageList)
+        $this->areAllShared = in_array("*", $packageList);
 
         if (!$this->areAllShared) {
             $this->packageCallbacks = $this->createCallbacks($packageList);
@@ -95,8 +95,8 @@ class SharedPackageSolver
             }
 
             foreach($this->packageExcludeList as $packageExcluded) {
-                $packageIncluded = str_replace("*", "", $packageIncluded);
-                if (strpos($packageIncluded, $prettyName) {
+                $packageExcluded = str_replace("*", "", $packageExcluded);
+                if (strpos($packageExcluded, $prettyName) {
                     $return = false;
                 }
             }
