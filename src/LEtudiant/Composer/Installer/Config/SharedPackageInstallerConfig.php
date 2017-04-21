@@ -59,6 +59,16 @@ class SharedPackageInstallerConfig
      */
     protected $packageList = array();
 
+    /**
+     * @var array
+     */
+    protected $packageIncludeList = array();
+
+    /**
+     * @var array
+     */
+    protected $packageExcludeList = array();
+
 
     /**
      * @param string     $originalRelativeVendorDir
@@ -77,6 +87,8 @@ class SharedPackageInstallerConfig
         $this->setIsSymlinkEnabled($extraConfigs);
         $this->setInstallBinaries($extraConfigs);
         $this->setPackageList($extraConfigs);
+        $this->setPackageIncludeList($extraConfigs);
+        $this->setPackageExcludeList($extraConfigs);
     }
 
     /**
@@ -202,6 +214,39 @@ class SharedPackageInstallerConfig
             $this->packageList = $packageList;
         }
     }
+
+    /**
+     * @param array $extraConfigs
+     */
+    public function setPackageIncludeList(array $extraConfigs)
+    {
+        if (isset($extraConfigs[SharedPackageInstaller::PACKAGE_TYPE]['package-include-list'])) {
+            $packageIncludeList = $extraConfigs[SharedPackageInstaller::PACKAGE_TYPE]['package-include-list'];
+
+            if (!is_array($packageIncludeList)) {
+                throw new \UnexpectedValueException('The configuration "package-include-list" should be a JSON object');
+            }
+
+            $this->packageIncludeList = $packageIncludeList;
+        }
+    }
+
+    /**
+     * @param array $extraConfigs
+     */
+    public function setPackageExcludeList(array $extraConfigs)
+    {
+        if (isset($extraConfigs[SharedPackageInstaller::PACKAGE_TYPE]['package-exclude-list'])) {
+            $packageExcludeList = $extraConfigs[SharedPackageInstaller::PACKAGE_TYPE]['package-exclude-list'];
+
+            if (!is_array($packageExcludeList)) {
+                throw new \UnexpectedValueException('The configuration "package-exclude-list" should be a JSON object');
+            }
+
+            $this->packageExlcudeList = $packageExcludeList;
+        }
+    }
+
 
     /**
      * @return bool
