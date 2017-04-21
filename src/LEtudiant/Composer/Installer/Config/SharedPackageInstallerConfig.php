@@ -200,6 +200,22 @@ class SharedPackageInstallerConfig
     }
 
     /**
+     * @return array
+     */
+    public function getPackageIncludeList()
+    {
+        return $this->packageIncludeList;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPackageExcludeList()
+    {
+        return $this->packageExcludeList;
+    }
+
+    /**
      * @param array $extraConfigs
      */
     public function setPackageList(array $extraConfigs)
