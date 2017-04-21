@@ -26,16 +26,6 @@ class SharedPackageSolver
     protected $packageCallbacks = array();
 
     /**
-     * @var array
-     */
-    protected $packageIncludeList = array();
-
-    /**
-     * @var array
-     */
-    protected $packageExcludeList = array();
-
-    /**
      * @var bool
      */
     protected $areAllShared = false;
@@ -46,7 +36,6 @@ class SharedPackageSolver
      */
     public function __construct(SharedPackageInstallerConfig $config)
     {
-        var_dump($config);
         $packageList = $config->getPackageList();
         $this->areAllShared = in_array("*", $packageList);
 
@@ -56,6 +45,7 @@ class SharedPackageSolver
 
         $this->packageIncludeList = $config->getPackageIncludeList();
         $this->packageExcludeList = $config->getPackageExcludeList();
+        var_dump($config->getPackageExcludeList());
     }
 
     /**
