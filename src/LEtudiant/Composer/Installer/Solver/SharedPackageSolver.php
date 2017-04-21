@@ -84,6 +84,7 @@ class SharedPackageSolver
             }
         }
 
+        var_dump($this->packageExcludeList);
         if (!empty($this->packageIncludeList) || !empty($this->packageExcludeList)) {
 
             foreach($this->packageIncludeList as $packageIncluded) {
