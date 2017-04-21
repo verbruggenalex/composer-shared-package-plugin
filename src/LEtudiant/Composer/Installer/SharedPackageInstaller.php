@@ -250,11 +250,10 @@ class SharedPackageInstaller extends LibraryInstaller
                 $this->getPackageVendorSymlink($package)
             )
         ) {
-            $this->io->write(array(
+            $this->io->writeln(
                 '  - Creating symlink for <info>' . $package->getPrettyName()
-                . '</info> (<fg=yellow>' . $package->getPrettyVersion() . '</fg=yellow>)',
-                ''
-            ));
+                . '</info> (<fg=yellow>' . $package->getPrettyVersion() . '</fg=yellow>)'
+            );
         }
     }
 
