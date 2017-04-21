@@ -137,7 +137,7 @@ class SharedPackageInstaller extends LibraryInstaller
                 );
 
                 // Disable install binaries to prevent recursion.
-                $extra = array_merge($this->composer->getPackage()->getExtra(), array('shared-package' => array('install-binaries' => true)));
+                $extra = array_merge($this->composer->getPackage()->getExtra(), array('shared-package' => array('install-binaries' => false)));
 
                 // Merge extra.
                 $subcomposer->getPackage()->setExtra($extra);
