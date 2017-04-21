@@ -26,6 +26,16 @@ class SharedPackageSolver
     protected $packageCallbacks = array();
 
     /**
+     * @var array
+     */
+    protected $packageIncludeList = array();
+
+    /**
+     * @var array
+     */
+    protected $packageExcludeList = array();
+
+    /**
      * @var bool
      */
     protected $areAllShared = false;
@@ -36,12 +46,15 @@ class SharedPackageSolver
      */
     public function __construct(SharedPackageInstallerConfig $config)
     {
-        $packageIncludeList = $config->getPackageIncludeList();
-        $packageExcludeList = $config->getPackageExcludeList();
+        $packageList = $config->getPackageList();
+        $this->areAllShared = in_array("*", $packageList)
 
-        if (!$this->areAllShared = in_array("*", $packageList)) {
+        if (!$this->areAllShared) {
             $this->packageCallbacks = $this->createCallbacks($packageList);
         }
+
+        $this->packageIncludeList = $config->getPackageIncludeList();
+        $this->packageExcludeList = $config->getPackageExcludeList();
     }
 
     /**
@@ -52,6 +65,7 @@ class SharedPackageSolver
     public function isSharedPackage(PackageInterface $package)
     {
         $prettyName = $package->getPrettyName();
+        $return = true;
 
         // Avoid putting this package into dependencies folder, because on the first installation the package won't be
         // installed in dependencies folder but in the vendor folder.
@@ -70,7 +84,25 @@ class SharedPackageSolver
             }
         }
 
-        return false;
+        if (!empty($this->packageIncludeList) || !empty($this->packageExcludeList)) {
+
+            foreach($this->packageIncludeList as $packageIncluded) {
+                $return = false;
+                $packageIncluded = str_replace("*", "", $packageIncluded);
+                if (strpos($packageIncluded, $prettyName) {
+                    $return = true;
+                }
+            }
+
+            foreach($this->packageExcludeList as $packageExcluded) {
+                $packageIncluded = str_replace("*", "", $packageIncluded);
+                if (strpos($packageIncluded, $prettyName) {
+                    $return = false;
+                }
+            }
+        }
+
+        return $return;
     }
 
     /**
