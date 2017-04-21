@@ -55,6 +55,7 @@ class SharedPackageSolver
 
         $this->packageIncludeList = $config->getPackageIncludeList();
         $this->packageExcludeList = $config->getPackageExcludeList();
+        var_dump($config->getPackageExcludeList());
     }
 
     /**
