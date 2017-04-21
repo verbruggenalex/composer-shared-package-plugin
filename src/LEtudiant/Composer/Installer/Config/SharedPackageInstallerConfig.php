@@ -259,7 +259,7 @@ class SharedPackageInstallerConfig
                 throw new \UnexpectedValueException('The configuration "package-exclude-list" should be a JSON object');
             }
 
-            $this->packageExlcudeList = $packageExcludeList;
+            $this->packageExcludeList = $packageExcludeList;
         }
     }
 
