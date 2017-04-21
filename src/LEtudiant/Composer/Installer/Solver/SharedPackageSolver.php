@@ -26,6 +26,16 @@ class SharedPackageSolver
     protected $packageCallbacks = array();
 
     /**
+     * @var array
+     */
+    protected $includes = array();
+
+    /**
+     * @var array
+     */
+    protected $excludes = array();
+
+    /**
      * @var bool
      */
     protected $areAllShared = false;
@@ -36,6 +46,8 @@ class SharedPackageSolver
      */
     public function __construct(SharedPackageInstallerConfig $config)
     {
+        var_dump($config);
+
         $packageList = $config->getPackageList();
         $this->areAllShared = in_array("*", $packageList);
 
@@ -43,9 +55,8 @@ class SharedPackageSolver
             $this->packageCallbacks = $this->createCallbacks($packageList);
         }
 
-        $this->packageIncludeList = $config->getPackageIncludeList();
-        $this->packageExcludeList = $config->getPackageExcludeList();
-        var_dump($this->packageExcludeList);
+        $this->includes = $config->getPackageIncludeList();
+        $this->excludes = $config->getPackageExcludeList();
     }
 
     /**
@@ -75,9 +86,9 @@ class SharedPackageSolver
             }
         }
 
-        if (!empty($this->packageIncludeList) || !empty($this->packageExcludeList)) {
+        if (!empty($this->includes) || !empty($this->excludes)) {
 
-            foreach($this->packageIncludeList as $packageIncluded) {
+            foreach($this->includes as $packageIncluded) {
                 $return = false;
                 $packageIncluded = str_replace("*", "", $packageIncluded);
                 if (strpos($packageIncluded, $prettyName) !== false) {
@@ -85,7 +96,7 @@ class SharedPackageSolver
                 }
             }
 
-            foreach($this->packageExcludeList as $packageExcluded) {
+            foreach($this->excludes as $packageExcluded) {
                 $packageExcluded = str_replace("*", "", $packageExcluded);
                 if (strpos($packageExcluded, $prettyName) !== false) {
                     $return = false;
