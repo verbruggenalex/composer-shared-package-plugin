@@ -89,14 +89,14 @@ class SharedPackageSolver
             foreach($this->packageIncludeList as $packageIncluded) {
                 $return = false;
                 $packageIncluded = str_replace("*", "", $packageIncluded);
-                if (strpos($packageIncluded, $prettyName)) {
+                if (strpos($packageIncluded, $prettyName) !== false) {
                     $return = true;
                 }
             }
 
             foreach($this->packageExcludeList as $packageExcluded) {
                 $packageExcluded = str_replace("*", "", $packageExcluded);
-                if (strpos($packageExcluded, $prettyName)) {
+                if (strpos($packageExcluded, $prettyName) !== false) {
                     $return = false;
                 }
             }
