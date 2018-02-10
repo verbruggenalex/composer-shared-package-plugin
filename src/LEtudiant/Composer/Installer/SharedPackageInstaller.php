@@ -82,7 +82,7 @@ class SharedPackageInstaller extends LibraryInstaller
 
         $basePath =
             $this->vendorDir . DIRECTORY_SEPARATOR
-            . $package->getPrettyName() . DIRECTORY_SEPARATOR
+            . $package->getPrettyName() . '-'
             . $package->getPrettyVersion()
         ;
 
